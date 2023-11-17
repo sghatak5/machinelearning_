@@ -18,40 +18,52 @@ predict = "G3"
 
 # Create feature matrix X and target vector y
 X = np.array(data.drop([predict], axis=1))
-print(X)
 y = np.array(data[predict])
+# Split the data into training and testing sets
 x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(X, y, test_size=0.2)
 
-best = 0
+# Initialize a linear regression model
+"""best = 0
 for _ in range(50):
+    # Split the data into training and testing sets (inside the loop for multiple iterations)
     x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(X, y, test_size=0.1)
 
+    # Create and train a linear regression model
     linear = linear_model.LinearRegression()
-
     linear.fit(x_train, y_train)
+
+    # Evaluate the model's accuracy on the test set
     acc = linear.score(x_test, y_test)
     print(acc)
 
+    # Save the model if it performs better than the previous best
     if acc > best:
         best = acc
-        with open("studentmodel.pickle", "wb") as f:
-            pickle.dump(linear, f)
+        with open("studentmodel2.pickle", "wb") as f:
+            pickle.dump(linear, f)"""
 
-pickle_in = open("studentmodel.pickle", "rb")
+# Load the best-performing model from the saved file
+pickle_in = open("studentmodel2.pickle", "rb")
 linear = pickle.load(pickle_in)
+
+# Print the model's score on the test set
 print (linear.score(x_test, y_test))
 
+# Print the coefficients and intercept of the linear regression model
 print('Coefficient: \n', linear.coef_)
 print('Intercept: \n', linear.intercept_)
 
+# Make predictions on the test set
 prediction = linear.predict(x_test)
 
-for x in range(len(prediction)):
-    print(prediction[x], x_test[x], y_test[x])
+# Print the predicted values alongside the actual values
+for i in range(len(prediction)):
+    print(prediction[i], x_test[i], y_test[i])
 
-p = "studytime"
+# Scatter plot of 'studytime' vs. 'G2' with 'G2' on the y-axis and 'studytime' on the x-axis
+p = "G1"
 style.use("ggplot")
-plt.scatter(data[p], data["G2"])
+plt.scatter(data[p], data["G3"])
 plt.xlabel(p)
 plt.ylabel("Final Grade")
 plt.show()
