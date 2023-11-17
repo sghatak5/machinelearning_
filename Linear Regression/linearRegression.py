@@ -22,26 +22,6 @@ y = np.array(data[predict])
 # Split the data into training and testing sets
 x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(X, y, test_size=0.2)
 
-# Initialize a linear regression model
-"""best = 0
-for _ in range(50):
-    # Split the data into training and testing sets (inside the loop for multiple iterations)
-    x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(X, y, test_size=0.1)
-
-    # Create and train a linear regression model
-    linear = linear_model.LinearRegression()
-    linear.fit(x_train, y_train)
-
-    # Evaluate the model's accuracy on the test set
-    acc = linear.score(x_test, y_test)
-    print(acc)
-
-    # Save the model if it performs better than the previous best
-    if acc > best:
-        best = acc
-        with open("studentmodel2.pickle", "wb") as f:
-            pickle.dump(linear, f)"""
-
 # Load the best-performing model from the saved file
 pickle_in = open("studentmodel2.pickle", "rb")
 linear = pickle.load(pickle_in)
