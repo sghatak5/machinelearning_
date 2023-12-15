@@ -127,7 +127,7 @@ def CrossEntropyLoss(y_pred, y_true):
     return loss, dvalue
 
 #HyperParameters
-LearningRate = 0.001
+LearningRate = 0.0001
 Epochs = 300
 batch_size = 16
 
@@ -142,6 +142,8 @@ activation2 = ActivationReLU()
 #Define Layer3
 Layer3 = DenseLayer(15, 6)
 activation3 = ActivationSoftMax()
+
+best_train_loss = 10
 
 #Training
 for epoch in range(Epochs):
@@ -222,10 +224,15 @@ for epoch in range(Epochs):
 
     test_output = activation3.output'''
 
+    if train_loss < best_train_loss:
+        best_train_loss = train_loss
+        Layer1_params = [Layer1.weight, Layer1.bias]
+        Layer2_params = [Layer2.weight, Layer2.bias]
 
     #Print Loss after certain iteration iteration
     if (epoch % 10) == 0:
         print(f"Epoch: {epoch}, Train Loss: {train_loss}")
+        print(f"Best_train_loss: {best_train_loss}")
 
 #predicted_classes = np.argmax(test_output, axis=1)
 
