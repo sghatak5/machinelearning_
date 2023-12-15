@@ -144,6 +144,7 @@ Layer3 = DenseLayer(15, 6)
 activation3 = ActivationSoftMax()
 
 best_train_loss = 10
+count = 0
 
 #Training
 for epoch in range(Epochs):
@@ -162,10 +163,12 @@ for epoch in range(Epochs):
         activation3.forward(Layer3.output)
 
         output = activation3.output
+        #print(f"Output shape: {output.shape}")
+
 
         # Convert y to one-hot encoding
         y_true = OneHotEncoder(batch_y_train, num_classes)
-
+        #print(f"y_true Shape: {y_true.shape}")
         # Loss Computation for Training Data
         train_loss, dvalue = CrossEntropyLoss(output, y_true)
 
@@ -190,27 +193,32 @@ for epoch in range(Epochs):
         end_idx = min(start_idx + batch_size, len(X_val))
         batch_X_val = X_val[start_idx:end_idx]
         batch_y_val = y_val[start_idx:end_idx]
+        
 
         print(f"batch_X_val shape: {batch_X_val.shape}")
-        print(f"batch_y_val shape: {batch_y_val.shape}")
+        print(f"batch_y_val shape: {batch_y_val.shape}")'''
 
-        if len(batch_y_val) > 0:  # Check that the batch is not empty
-            y_val = OneHotEncoder(batch_y_val, num_classes)
-        #print(f"bat_y_val: {batch_y_val}")
+    for start_idx in range(0, len(X_val), batch_size):
+        end_idx = min(start_idx + batch_size, len(X_val))
+        batch_X_val = X_val[start_idx:end_idx]
+        batch_y_val = y_val[start_idx:end_idx]
 
-    Layer1.forward(batch_X_val)
-    activation1.forward(Layer1.output)
+        Layer1.forward(batch_X_val)
+        activation1.forward(Layer1.output)
 
-    Layer2.forward(activation1.output)
-    activation2.forward(Layer2.output)
+        Layer2.forward(activation1.output)
+        activation2.forward(Layer2.output)
 
-    Layer3.forward(activation2.output)
-    activation3.forward(Layer3.output)
+        Layer3.forward(activation2.output)
+        activation3.forward(Layer3.output)
 
-    output_val = activation3.output
+        output_val = activation3.output
 
-    #Loss Computation for Validating Data
-    val_loss, _ = CrossEntropyLoss(output_val, y_val)
+        #Convert y to one hot encoding
+        y_val_true = OneHotEncoder(batch_y_val, num_classes)
+
+        #Loss Computation for Validating Data
+        val_loss, _ = CrossEntropyLoss(output_val, y_val_true)
 
     # Forward pass on test data
     """Layer1.forward(X_test)
@@ -222,17 +230,17 @@ for epoch in range(Epochs):
     Layer3.forward(activation2.output)
     activation3.forward(Layer3.output)
 
-    test_output = activation3.output'''
+    test_output = activation3.output
 
     if train_loss < best_train_loss:
         best_train_loss = train_loss
         Layer1_params = [Layer1.weight, Layer1.bias]
-        Layer2_params = [Layer2.weight, Layer2.bias]
+        Layer2_params = [Layer2.weight, Layer2.bias]"""
 
     #Print Loss after certain iteration iteration
     if (epoch % 10) == 0:
-        print(f"Epoch: {epoch}, Train Loss: {train_loss}")
-        print(f"Best_train_loss: {best_train_loss}")
+        print(f"Epoch: {epoch}, Train Loss: {train_loss}, Validation Loss: {val_loss}")
+        #print(f"Best_train_loss: {best_train_loss}")
 
 #predicted_classes = np.argmax(test_output, axis=1)
 
@@ -243,5 +251,4 @@ for epoch in range(Epochs):
 #for i, class_name in enumerate(predicted_class_names):
     #print(f"Image {i}: Class {class_name}")
 
-#Testing the data'''
-
+#Testing the data
